@@ -1,0 +1,351 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user's profile, including their role.",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The Firebase Authentication User ID (UID)."
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "admin",
+            "user"
+          ],
+          "description": "The user's role in the application."
+        }
+      },
+      "required": [
+        "uid",
+        "email"
+      ]
+    },
+    "AppConfig": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AppConfig",
+      "type": "object",
+      "description": "Represents the global application configuration, including social media links and the content for the 'Conócenos' page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AppConfig entity (e.g., 'mainConfig')."
+        },
+        "instagramUrl": {
+          "type": "string",
+          "description": "The URL for the project's Instagram profile.",
+          "format": "uri"
+        },
+        "tiktokUrl": {
+          "type": "string",
+          "description": "The URL for the project's TikTok profile.",
+          "format": "uri"
+        },
+        "youtubeUrl": {
+          "type": "string",
+          "description": "The URL for the project's YouTube channel.",
+          "format": "uri"
+        },
+        "aboutUsContent": {
+          "type": "string",
+          "description": "The editorial text content for the 'Conócenos' (About Us) page."
+        },
+        "lastUpdated": {
+          "type": "string",
+          "description": "Timestamp when this configuration was last updated.",
+          "format": "date-time"
+        },
+        "featuredItem": {
+          "type": "object",
+          "description": "The manually selected item to be featured on the homepage.",
+          "properties": {
+            "coverUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL for the cover image of the featured film."
+            },
+            "director": {
+              "type": "string",
+              "description": "Director of the featured film."
+            },
+            "movieTitle": {
+              "type": "string",
+              "description": "Title of the featured film."
+            },
+            "watchOn": {
+              "type": "array",
+              "description": "Streaming platforms where the featured film is available.",
+              "items": {
+                "$ref": "#/entities/Film/properties/disponibleEn/items"
+              }
+            },
+            "videoUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL to the video essay."
+            },
+            "description": {
+              "type": "string",
+              "description": "Synopsis or description of the featured film."
+            }
+          },
+          "required": [
+            "coverUrl",
+            "director",
+            "movieTitle",
+            "watchOn",
+            "videoUrl"
+          ]
+        },
+        "featuredArchiveVideoUrl": {
+          "type": "string",
+          "description": "The URL for the featured YouTube video on the 'Archivo Visual' page.",
+          "format": "uri"
+        },
+        "homeBannerUrl": {
+          "type": "string",
+          "description": "The URL for the promotional banner image on the homepage.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "instagramUrl",
+        "tiktokUrl",
+        "youtubeUrl",
+        "aboutUsContent"
+      ]
+    },
+    "AfterglowEpisode": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AfterglowEpisode",
+      "type": "object",
+      "description": "Representa una publicación de una red social (ej. Instagram, TikTok) para el Archivo Visual.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador único para la entidad AfterglowEpisode."
+        },
+        "title": {
+          "type": "string",
+          "description": "El título de la publicación."
+        },
+        "postUrl": {
+          "type": "string",
+          "description": "La URL completa de la publicación en la red social (ej. Instagram).",
+          "format": "uri"
+        },
+        "episodeDate": {
+          "type": "string",
+          "description": "La fecha en que se publicó el post.",
+          "format": "date"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Una lista de etiquetas para el episodio.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Marca de tiempo de cuándo se creó esta entrada en el sistema.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "postUrl",
+        "episodeDate",
+        "createdAt"
+      ]
+    },
+    "Film": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Película",
+      "type": "object",
+      "description": "Representa una película en el catálogo 'El Salón' de cine independiente.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador único para la entidad Película."
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL-friendly identifier for the film."
+        },
+        "titulo": {
+          "type": "string",
+          "description": "El título de la película."
+        },
+        "año": {
+          "type": "number",
+          "description": "El año de lanzamiento de la película."
+        },
+        "direccion": {
+          "type": "string",
+          "description": "El nombre del director o directora de la película."
+        },
+        "genero": {
+          "type": "array",
+          "description": "Una lista de géneros para la película.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pais": {
+          "type": "string",
+          "description": "El país de origen de la película (ej: 'Francia')."
+        },
+        "duracion": {
+          "type": "number",
+          "description": "La duración de la película en minutos."
+        },
+        "disponibleEn": {
+          "type": "array",
+          "description": "Una lista de plataformas de streaming donde la película está disponible, incluyendo sus respectivos enlaces.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "plataforma": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "plataforma"
+            ]
+          }
+        },
+        "sinopsis": {
+          "type": "string",
+          "description": "Una sinopsis editorial o breve descripción de la película."
+        },
+        "posterUrl": {
+          "type": "string",
+          "description": "La URL de la imagen del póster de la película.",
+          "format": "uri"
+        },
+        "screenshots": {
+          "type": "array",
+          "description": "Una lista de hasta 4 URLs de imágenes de capturas de la película.",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "letterboxdUrl": {
+          "type": "string",
+          "description": "El enlace a la página de la película en Letterboxd.",
+          "format": "uri"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Marca de tiempo de cuándo se creó esta entrada de película en el sistema.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "slug",
+        "titulo",
+        "año",
+        "direccion",
+        "genero",
+        "pais",
+        "duracion",
+        "disponibleEn",
+        "sinopsis",
+        "posterUrl",
+        "createdAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/config/{configId}",
+        "definition": {
+          "entityName": "AppConfig",
+          "schema": {
+            "$ref": "#/backend/entities/AppConfig"
+          },
+          "description": "Stores global application configuration settings, such as social media links and the 'Conócenos' page content. Intended to have a single document (e.g., 'mainConfig'). Publicly readable, modifiable only by administrators.",
+          "params": [
+            {
+              "name": "configId",
+              "description": "Unique identifier for the application configuration document (e.g., 'mainConfig')."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/afterglow/{afterglowEpisodeId}",
+        "definition": {
+          "entityName": "AfterglowEpisode",
+          "schema": {
+            "$ref": "#/backend/entities/AfterglowEpisode"
+          },
+          "description": "Collection of 'Afterglow' video series episodes. Each document represents a single episode, including YouTube video ID and editorial details. Publicly readable, modifiable only by administrators.",
+          "params": [
+            {
+              "name": "afterglowEpisodeId",
+              "description": "Unique identifier for an 'Afterglow' episode."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/salon/{filmId}",
+        "definition": {
+          "entityName": "Film",
+          "schema": {
+            "$ref": "#/backend/entities/Film"
+          },
+          "description": "Collection of film entries for 'El Salón' catalog. Each document represents a film with its details, synopsis, and streaming availability. Publicly readable, modifiable only by administrators.",
+          "params": [
+            {
+              "name": "filmId",
+              "description": "Unique identifier for a film in 'El Salón' catalog."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information, including their role. The document ID is the user's UID. User can read/write their own profile. Admins can read any profile.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Authentication User ID (UID) of the user."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
