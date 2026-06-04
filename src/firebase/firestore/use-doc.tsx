@@ -43,7 +43,16 @@ export function useDoc<T = any>(
       memoizedDocRef,
       (snapshot: DocumentSnapshot<DocumentData>) => {
         if (snapshot.exists()) {
-          setData({ ...(snapshot.data() as T), id: snapshot.id });
+          const docData = snapshot.data();
+          const serializedData = { ...docData };
+          
+          Object.keys(serializedData).forEach(key => {
+            if (serializedData[key] && typeof serializedData[key].toDate === 'function') {
+              serializedData[key] = serializedData[key].toDate().toISOString();
+            }
+          });
+          
+          setData({ ...(serializedData as T), id: snapshot.id });
         } else {
           setData(null);
         }

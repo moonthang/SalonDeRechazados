@@ -8,6 +8,10 @@ import { es } from 'date-fns/locale';
 import { useFirestore } from "@/firebase";
 import { collection, getDocs, query, orderBy, limit, startAfter, where, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import { Skeleton } from "../ui/skeleton";
+import Link from "next/link";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { Film, ArrowUpRight, PlayCircle } from "lucide-react";
 
 type PostGridProps = {
     selectedTag: string;
@@ -124,12 +128,42 @@ export default function PostGrid({ selectedTag }: PostGridProps) {
             {episodes.map((episode, index) => (
                 <div key={`${episode.id}-${index}`} ref={index === episodes.length - 1 ? lastEpisodeElementRef : null}>
                     <PostCard episode={episode} />
-                    <div className="mt-4">
-                        <h3 className="font-semibold text-base">{episode.title}</h3>
-                        {isValidDate(episode.episodeDate) && (
-                            <p className="text-sm text-muted-foreground">
-                                {format(parseISO(episode.episodeDate), "d 'de' MMMM, yyyy", { locale: es })}
-                            </p>
+                    <div className="mt-4 space-y-3">
+                        <div>
+                            <h3 className="font-semibold text-base leading-tight">{episode.title}</h3>
+                            {isValidDate(episode.episodeDate) && (
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    {format(parseISO(episode.episodeDate), "d 'de' MMMM, yyyy", { locale: es })}
+                                </p>
+                            )}
+                        </div>
+
+                        {(episode.linkedFilmSlug || (episode.disponibleEn && episode.disponibleEn.length > 0)) && (
+                            <div className="pt-1 space-y-3">
+                                {episode.linkedFilmSlug ? (
+                                    <Button asChild variant="secondary" size="sm" className="w-full group">
+                                        <Link href={`/salon/${episode.linkedFilmSlug}`}>
+                                            <Film className="mr-2 h-4 w-4 group-hover:text-primary transition-colors" />
+                                            Ver en El Salón
+                                            <ArrowUpRight className="ml-auto h-3 w-3 opacity-50" />
+                                        </Link>
+                                    </Button>
+                                ) : episode.disponibleEn && episode.disponibleEn.length > 0 && (
+                                    <div className="space-y-1.5">
+                                        <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Ver en:</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {episode.disponibleEn.map((platform, i) => (
+                                                <Link key={i} href={platform.link || '#'} target="_blank" rel="noopener noreferrer">
+                                                    <Badge variant="outline" className="text-[10px] hover:bg-primary/10 hover:border-primary/50 transition-colors py-0.5">
+                                                        <PlayCircle className="w-3 h-3 mr-1" />
+                                                        {platform.plataforma}
+                                                    </Badge>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         )}
                     </div>
                 </div>

@@ -56,7 +56,7 @@ export default function FilmList({ searchQuery }: { searchQuery: string }) {
     if (!filteredFilms) return [];
     return [...filteredFilms].sort((a, b) => {
         if (a.createdAt && b.createdAt) {
-            return b.createdAt.toMillis() - a.createdAt.toMillis();
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         }
         return 0;
     });

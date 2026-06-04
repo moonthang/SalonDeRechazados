@@ -1,3 +1,5 @@
+'use client';
+
 import { Card } from "@/components/ui/card";
 import type { AfterglowEpisode } from "@/lib/types";
 import { Button } from "../ui/button";
@@ -28,28 +30,30 @@ export default function PostCard({ episode }: PostCardProps) {
 
   return (
     <Card className="glass-card overflow-hidden">
-      {embedUrl ? (
-        <div className="aspect-[4/5] relative w-full">
-          <iframe
-            src={embedUrl}
-            allowFullScreen
-            className="w-full h-full border-0"
-            scrolling="no"
-          ></iframe>
-        </div>
-      ) : (
-        <div className="aspect-[4/5] relative w-full bg-muted flex items-center justify-center p-8">
-            <div className="text-center">
-                <p className="text-muted-foreground mb-4">No se puede previsualizar esta publicación.</p>
-                <Button asChild>
-                    <Link href={episode.postUrl} target="_blank" rel="noopener noreferrer">
-                        Ver Publicación
-                        <ArrowUpRight className="ml-2 h-4 w-4" />
-                    </Link>
-                </Button>
+      <div className="relative w-full">
+        {embedUrl ? (
+            <div className="aspect-[4/5] relative w-full">
+            <iframe
+                src={embedUrl}
+                allowFullScreen
+                className="w-full h-full border-0"
+                scrolling="no"
+            ></iframe>
             </div>
-        </div>
-      )}
+        ) : (
+            <div className="aspect-[4/5] relative w-full bg-muted flex items-center justify-center p-8 text-center">
+                <div>
+                    <p className="text-muted-foreground mb-4 text-sm">Previsualización no disponible.</p>
+                    <Button asChild size="sm" variant="outline">
+                        <Link href={episode.postUrl} target="_blank" rel="noopener noreferrer">
+                            Ver Publicación
+                            <ArrowUpRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </div>
+            </div>
+        )}
+      </div>
     </Card>
   );
 }

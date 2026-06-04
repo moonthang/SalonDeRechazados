@@ -52,7 +52,7 @@ const SlugsQuery = gql`
             slug
         }
     }
-`
+`;
 
 export async function getPosts(limit?: number): Promise<Post[]> {
   try {

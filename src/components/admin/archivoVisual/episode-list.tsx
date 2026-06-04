@@ -58,7 +58,7 @@ export default function EpisodeList({ searchQuery }: { searchQuery: string }) {
     if (!filteredEpisodes) return [];
     return [...filteredEpisodes].sort((a, b) => {
         if (a.createdAt && b.createdAt) {
-            return b.createdAt.toMillis() - a.createdAt.toMillis();
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         }
         return 0;
     });

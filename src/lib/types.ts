@@ -12,7 +12,10 @@ export type AfterglowEpisode = {
   postUrl: string;
   episodeDate: string;
   tags?: string[];
-  createdAt: Timestamp;
+  createdAt: string;
+  linkedFilmId?: string;
+  linkedFilmSlug?: string;
+  disponibleEn?: FilmPlatform[];
 };
 
 export type FilmPlatform = {
@@ -34,7 +37,7 @@ export type Film = {
   posterUrl: string;
   screenshots?: string[];
   letterboxdUrl?: string;
-  createdAt: Timestamp;
+  createdAt: string;
 };
 
 export type FeaturedItem = {

@@ -6,10 +6,21 @@ import type { Film, AfterglowEpisode, Config } from './types';
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
-const fromSnap = <T>(snap: QueryDocumentSnapshot<DocumentData>): T => ({
-  id: snap.id,
-  ...snap.data(),
-} as T);
+const fromSnap = <T>(snap: QueryDocumentSnapshot<DocumentData>): T => {
+  const data = snap.data();
+  const serializedData = { ...data };
+  
+  Object.keys(serializedData).forEach(key => {
+    if (serializedData[key] && typeof serializedData[key].toDate === 'function') {
+      serializedData[key] = serializedData[key].toDate().toISOString();
+    }
+  });
+
+  return {
+    id: snap.id,
+    ...serializedData,
+  } as T;
+};
 
 export async function getFilms(count?: number): Promise<Film[]> {
   try {
@@ -31,7 +42,14 @@ export async function getFilmById(id: string): Promise<Film | null> {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as Film;
+      const data = docSnap.data();
+      const serializedData = { ...data };
+      Object.keys(serializedData).forEach(key => {
+        if (serializedData[key] && typeof serializedData[key].toDate === 'function') {
+          serializedData[key] = serializedData[key].toDate().toISOString();
+        }
+      });
+      return { id: docSnap.id, ...serializedData } as Film;
     } else {
       return null;
     }
@@ -47,8 +65,7 @@ export async function getFilmBySlug(slug: string): Promise<Film | null> {
     const querySnapshot = await getDocs(q);
     
     if (!querySnapshot.empty) {
-      const docSnap = querySnapshot.docs[0];
-      return { id: docSnap.id, ...docSnap.data() } as Film;
+      return fromSnap<Film>(querySnapshot.docs[0]);
     } else {
       return null;
     }
@@ -56,7 +73,6 @@ export async function getFilmBySlug(slug: string): Promise<Film | null> {
     return null;
   }
 }
-
 
 export async function getAfterglowEpisodes(count?: number): Promise<AfterglowEpisode[]> {
   try {
