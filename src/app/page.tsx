@@ -2,6 +2,7 @@ import SocialHub from '@/components/home/social-hub';
 import LatestAfterglow from '@/components/home/latest-afterglow';
 import LatestFilms from '@/components/home/latest-films';
 import ProjectSummary from '@/components/home/project-summary';
+import ContactCTA from '@/components/home/contact-cta';
 import { Separator } from '@/components/ui/separator';
 import { getConfig, getFilms } from '@/lib/firestore';
 import { getPosts } from '@/lib/hygraph';
@@ -26,6 +27,10 @@ export default async function Home() {
           <LatestAfterglow item={config?.featuredItem} />
           <Separator className="bg-white/10" />
           <LatestFilms films={films} />
+          
+          <Separator className="bg-white/10" />
+          <ContactCTA />
+
           {posts && posts.length > 0 && (
             <>
               <Separator className="bg-white/10" />
