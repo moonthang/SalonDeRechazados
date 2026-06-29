@@ -38,6 +38,7 @@ export const metadata: Metadata = {
   keywords: ['análisis de películas', 'crítica de cine', 'cine independiente', 'video-ensayos', 'Salón de Rechazados', 'cine colombiano'],
   verification: {
     google: 'ctA8c1Hwfjza4OWtLciZ2Pn_ylpzDmwTKZmIEXYUNoA',
+    bing: 'C9FA3F14A0E186423A48A8F334B6BA45', 
   },
   openGraph: {
     title: siteTitle,

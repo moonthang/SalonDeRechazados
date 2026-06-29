@@ -13,6 +13,7 @@ type BitacoraContentProps = {
 export default function BitacoraContent({ posts, tags }: BitacoraContentProps) {
   const [selectedTag, setSelectedTag] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedYear, setSelectedYear] = useState<string>("");
 
   const filteredPosts = useMemo(() => {
     let processedPosts = [...posts];
@@ -27,8 +28,15 @@ export default function BitacoraContent({ posts, tags }: BitacoraContentProps) {
         processedPosts = processedPosts.filter((post) => post.tags?.includes(selectedTag));
     }
 
+    if (selectedYear) {
+      processedPosts = processedPosts.filter((post) => {
+        const year = new Date(post.publishedAt).getFullYear().toString();
+        return year === selectedYear;
+      });
+    }
+
     return processedPosts;
-  }, [posts, selectedTag, searchQuery]);
+  }, [posts, selectedTag, searchQuery, selectedYear]);
 
   return (
     <div>
@@ -38,6 +46,8 @@ export default function BitacoraContent({ posts, tags }: BitacoraContentProps) {
         onTagChange={setSelectedTag}
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}
+        selectedYear={selectedYear}
+        onYearChange={setSelectedYear}
       />
       {filteredPosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
