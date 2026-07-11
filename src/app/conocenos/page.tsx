@@ -6,6 +6,12 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import ContactForm from '@/components/contact-form';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 export default function ConocenosPage() {
   return (
@@ -61,6 +67,20 @@ export default function ConocenosPage() {
             De hablar de cine a hacerlo.
           </h2>
         </div>
+      </section>
+
+      <section className="max-w-4xl mx-auto mb-32 px-6">
+        <h2 className="font-headline text-4xl font-bold mb-8 tracking-tight">Próximamente</h2>
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="quiz-recommender" className="border-white/10">
+            <AccordionTrigger className="text-xl md:text-2xl font-headline py-6 hover:text-primary transition-colors text-left">
+              ¿No sabes qué ver? Nuestro recomendador inteligente
+            </AccordionTrigger>
+            <AccordionContent className="text-lg text-muted-foreground leading-relaxed pt-2 pb-6">
+              Estamos desarrollando una experiencia interactiva única. Pronto podrás completar un breve quiz sobre tus gustos, el ambiente que buscas y lo que quieres sentir. Con tus respuestas, nuestro sistema te sugerirá la película perfecta de "El Salón" para tu momento actual, rescatando esas joyas que conectan con tu sensibilidad.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </section>
 
       <section className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
